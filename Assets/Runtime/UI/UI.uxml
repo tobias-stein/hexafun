@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Foldout text="Settings" picking-mode="Ignore" style="font-size: 22px; -unity-font-style: normal; scale: 1 1; border-left-color: rgb(2, 2, 2); border-right-color: rgb(2, 2, 2); border-top-color: rgb(2, 2, 2); border-bottom-color: rgb(2, 2, 2); background-color: rgba(255, 255, 255, 0.9); position: absolute; left: 8px; top: 8px;">
+        <ui:VisualElement name="BG" picking-mode="Ignore" style="border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; left: -30px; top: auto; flex-shrink: 0; flex-grow: 0; -unity-background-image-tint-color: rgb(255, 255, 255); background-color: rgba(255, 255, 255, 0.9); width: auto; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; position: absolute; margin-left: 0; margin-right: -30px; margin-top: 0; margin-bottom: 0; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; align-items: stretch;">
+            <ui:VisualElement name="HA" style="flex-direction: row; align-items: center; justify-content: space-between;">
+                <ui:RadioButtonGroup label="Coordinate" value="0" choices="Offset,Axial" name="coordinate" style="flex-direction: row; font-size: 22px; text-shadow: 1px 1px 0 rgb(255, 255, 255); -unity-font-style: normal;" />
+                <ui:RadioButtonGroup label="Orientation" value="0" choices="Pointy Top,Flat Top" name="orientation" style="flex-direction: row; font-size: 22px; text-shadow: 1px 1px 0 rgb(255, 255, 255); -unity-font-style: normal;" />
+            </ui:VisualElement>
+            <ui:SliderInt picking-mode="Ignore" label="Size" value="32" high-value="256" name="size" low-value="1" style="text-shadow: 1px 1px 0 rgb(255, 255, 255);" />
+            <ui:Slider picking-mode="Ignore" label="Scale" value="1" high-value="10" name="scale" low-value="0.1" style="margin-right: 4px; text-shadow: 1px 1px 0 rgb(255, 255, 255);" />
+            <ui:Slider picking-mode="Ignore" label="Height" value="10" high-value="300" name="zoom" low-value="1" style="margin-right: 4px; text-shadow: 1px 1px 0 rgb(255, 255, 255);" />
+            <ui:Slider picking-mode="Ignore" label="Pitch" value="90" high-value="90" name="pitch" low-value="0" style="margin-right: 4px; text-shadow: 1px 1px 0 rgb(255, 255, 255);" />
+            <ui:VisualElement name="HA" style="flex-direction: row; align-items: center; justify-content: space-between;">
+                <ui:Toggle label="Edit" name="edit" style="text-shadow: 1px 1px 0 rgb(255, 255, 255);" />
+                <ui:DropdownField label="Tile Type" index="2" choices="Moud,Water,Wall" name="tiletype" style="text-shadow: 1px 1px 0 rgb(255, 255, 255); flex-shrink: 1;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:Foldout>
+</ui:UXML>

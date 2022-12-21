@@ -1,0 +1,9 @@
+.vscode
+Library
+obj
+Logs
+Temp
+UIElementsSchema
+USerSettings
+*.csproj
+*.sln
