@@ -47,7 +47,7 @@ Shader "Unlit/HexShader"
             struct v2f
             {
                 float4 vertex       : SV_POSITION;
-                float3 barycentric  : COLOR0;
+                float3 color        : COLOR0;
             };
 
             fixed4      _WireframeColor;
@@ -57,7 +57,7 @@ Shader "Unlit/HexShader"
             {
                 v2f o;
                 o.vertex        = UnityObjectToClipPos(v.vertex);
-                o.barycentric   = v.color;
+                o.color         = v.color;
                 
                 return o;
             }
@@ -65,13 +65,13 @@ Shader "Unlit/HexShader"
             fixed4 frag(v2f i) : SV_Target
             {
                 // Calculate the unit width based on triangle size.
-                float3 d = fwidth(i.barycentric);
-                //return fixed4(i.barycentric.rgb, 1.0);
+                float3 d = fwidth(i.color);
+                //return fixed4(i.color.rgb, 1.0);
 
                 // Alias the line a bit.
-                float3 aliased = smoothstep(float3(0.0, 0.0, 0.0), d * _WireframeAliasing, i.barycentric);
+                float3 aliased = smoothstep(float3(0.0, 0.0, 0.0), d * _WireframeAliasing, i.color);
 
-                return fixed4(_WireframeColor.r, _WireframeColor.g, _WireframeColor.b, _WireframeColor.a * (1.0 - aliased.g));
+                return fixed4(_WireframeColor.r, _WireframeColor.g, _WireframeColor.b, _WireframeColor.a * (1.0 - aliased.r));
             }
 
             ENDCG

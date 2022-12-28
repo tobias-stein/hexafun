@@ -104,7 +104,7 @@ public class HexagonField : MonoBehaviour
         var triangles           = new List<int>();
         var tileUVs             = new List<Vector2>();
         var fieldUVs            = new List<Vector2>();
-        var barycentric         = new List<Color>();
+        var colors              = new List<Color>();
 
         var patter              = new int[]
         {
@@ -128,16 +128,16 @@ public class HexagonField : MonoBehaviour
                 fieldUVs.AddRange(Enumerable.Repeat(new Vector2((float)x, (float)z), 7).ToArray()); // this seems to mitigate/eliminate precision problem, when uvs -> hex-cell overlap
                 // fieldUVs.AddRange(Enumerable.Repeat(new Vector2((float)x / (float)this.size.x, (float)z / (float)this.size.y), 7).ToArray());
 
-                barycentric.AddRange(new Color[]
+                colors.AddRange(new Color[]
                 {
-                    Color.green, // center
+                    Color.white, // center
 
-                    Color.blue, // top (12 O'clock)
-                    Color.red,  // top-left (2 O'clock)
-                    Color.blue, // bottom-left (4 O'clock)
-                    Color.red,  // bottom (6 O'clock)
-                    Color.blue, // bottom-right (8 O'clock)
-                    Color.red,  // top-right (10 O'clock)
+                    Color.black, // corners
+                    Color.black,
+                    Color.black,
+                    Color.black,
+                    Color.black,
+                    Color.black,
                 });
             }
         }
@@ -146,7 +146,7 @@ public class HexagonField : MonoBehaviour
         mesh.uv                 = tileUVs.ToArray();
         mesh.uv2                = fieldUVs.ToArray();
         mesh.triangles          = triangles.ToArray();
-        mesh.colors             = barycentric.ToArray();
+        mesh.colors             = colors.ToArray();
         
         var meshFilter          = this.gameObject.GetComponent<MeshFilter>();
         meshFilter.sharedMesh   = mesh;
