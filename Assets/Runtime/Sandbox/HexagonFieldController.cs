@@ -110,7 +110,7 @@ public class HexagonFieldController
             {
                 // update hex field curser position
                 var worldPos = ray.GetPoint(distance);
-                var hexCoord = this.field.hexFilter.world2hex(worldPos) - this.field.origin;
+                var hexCoord = this.field.hexagon.world2hex(worldPos) - this.field.origin;
                 
                 // make sure hex-coord is on field
                 if(hexCoord.x >= 0 && hexCoord.x < this.field.size.x && hexCoord.y >= 0 && hexCoord.y < this.field.size.y)
@@ -196,18 +196,18 @@ public class HexagonFieldController
 
     private void toogleCoordinate() 
     {
-        this.field.coordinateSystem = this.field.coordinateSystem == HexagonTileFilter.CoordinateSystem.Offset 
-            ? HexagonTileFilter.CoordinateSystem.Axial 
-            : HexagonTileFilter.CoordinateSystem.Offset;
+        this.field.coordinateSystem = this.field.coordinateSystem == Hexagon.CoordinateSystem.Offset 
+            ? Hexagon.CoordinateSystem.Axial 
+            : Hexagon.CoordinateSystem.Offset;
 
         this.field.OnValidate();
     }
 
     private void toogleOrientation() 
     {
-        this.field.orientation = this.field.orientation == HexagonTileFilter.Orientation.PointyTop 
-            ? HexagonTileFilter.Orientation.FlatTop 
-            : HexagonTileFilter.Orientation.PointyTop;
+        this.field.orientation = this.field.orientation == Hexagon.Orientation.PointyTop 
+            ? Hexagon.Orientation.FlatTop 
+            : Hexagon.Orientation.PointyTop;
 
         this.field.OnValidate();
     }
@@ -331,7 +331,7 @@ public class HexagonFieldController
             if(current == this.end.Value) { break; }
             
             // for next in graph.neighbors(current):
-            var neighbors = this.field.hexFilter
+            var neighbors = this.field.hexagon
                 .neighbors(current)
                 // remove all neighbors out of bounds and tiles that have no NaN costs (e.g walls)
                 .Where(neighbor => neighbor.x >= 0 && neighbor.y >= 0 && neighbor.x < this.field.size.x && neighbor.y < this.field.size.y && !float.IsNaN(this.state.tiles[neighbor.y * this.field.size.x + neighbor.x].cost));
@@ -348,7 +348,7 @@ public class HexagonFieldController
                     if(cost_so_far.ContainsKey(next)) { cost_so_far[next] = new_cost; } else { cost_so_far.Add(next, new_cost); }
                     
                     //         priority = new_cost + heuristic(goal, next)
-                    float priority = new_cost + this.field.hexFilter.distance(this.end.Value, next);
+                    float priority = new_cost + this.field.hexagon.distance(this.end.Value, next);
 
                     //         frontier.put(next, priority)
                     frontier.Add(new Tuple<Vector2Int, float>(next, priority));

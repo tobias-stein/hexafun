@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Light-weight representation of a signle hexagon tile.
 /// </summary>
-public class HexagonTileFilter 
+public class Hexagon 
 {
     public enum Orientation { PointyTop, FlatTop };
     
@@ -21,7 +21,7 @@ public class HexagonTileFilter
     #region Construct new hexagon tile
 
     // TODO: consider the origin to determine even/odd spacing
-    public HexagonTileFilter(Orientation orientation, CoordinateSystem coordinateSystem, Vector2Int origin, float scale = 1.0f)
+    public Hexagon(Orientation orientation, CoordinateSystem coordinateSystem, Vector2Int origin, float scale = 1.0f)
     {
         this.orientation        = orientation;
         this.coordinateSystem   = coordinateSystem;

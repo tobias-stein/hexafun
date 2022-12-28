@@ -66,6 +66,8 @@ Shader "Unlit/HexShader"
             {
                 // Calculate the unit width based on triangle size.
                 float3 d = fwidth(i.barycentric);
+                //return fixed4(i.barycentric.rgb, 1.0);
+
                 // Alias the line a bit.
                 float3 aliased = smoothstep(float3(0.0, 0.0, 0.0), d * _WireframeAliasing, i.barycentric);
 
@@ -247,12 +249,17 @@ Shader "Unlit/HexShader"
                 float   w                               = _HighlightBorderBlur * fwidth(d);
 
                 float   cutout                          = kInnerRadius - _HighlightBorderSize;
-                float   angle01                         = ((atan2(ncp.x, ncp.y) * kInvPI) + 1.0) * 0.5;;
+                float   angle01                         = ((atan2(ncp.x, ncp.y) * kInvPI) + 1.0) * 0.5;
+
+                // return fixed4(angle01, angle01, angle01, 1.0);
 
                 float   segment                         = 0.0;
 
                 float2  halfTexelSize                   = _MainTex_TexelSize * 0.5;
                 float4  hexTileColor                    = tex2D(_MainTex, getHexTileUV(hexTileCoord) + float2(halfTexelSize.x * i.tileUV.x, halfTexelSize.y * i.tileUV.y));
+
+                // segment                                 = step(kHexSegmentLength * 5, angle01) * step(angle01, kHexSegmentLength * (5 + 1));
+                // return fixed4(angle01, angle01, angle01, segment);
 
                 if(hexTileColor.a > 0)  
                 {   
