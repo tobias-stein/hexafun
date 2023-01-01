@@ -69,6 +69,7 @@ Shader "Unlit/HexShader"
                 //return fixed4(i.color.rgb, 1.0);
 
                 // Alias the line a bit.
+                // float3 aliased = step(d, i.color);
                 float3 aliased = smoothstep(float3(0.0, 0.0, 0.0), d * _WireframeAliasing, i.color);
 
                 return fixed4(_WireframeColor.r, _WireframeColor.g, _WireframeColor.b, _WireframeColor.a * (1.0 - aliased.r));
@@ -220,9 +221,10 @@ Shader "Unlit/HexShader"
             fixed4 frag(v2f i) : SV_Target
             {                
                 const float     kInvPI                  = 1.0 / 3.14159265359;
-                const float     kInnerRadius            = 0.866; // inner radius of a unit hexagon (https://en.wikipedia.org/wiki/Hexagon)
+                const float     kInnerRadius            = 0.5; // https://en.wikipedia.org/wiki/Hexagon
+                const float     kOuterRadius            = 0.866; 
                 const float     kHexSegmentLength       = 1.0 / 6.0;
-                const float2    hexVector               = float2(1, 1.7320508) * 0.5;
+                const float2    hexVector               = float2(kInnerRadius, kOuterRadius);
 
                 int2 hexTileCoord                       = int2(i.fieldUV.x, i.fieldUV.y);
                 int  isSelected                         = hexTileCoord.x == _HexFieldCursor.x && hexTileCoord.y == _HexFieldCursor.y ? 1 : 0;
@@ -248,7 +250,9 @@ Shader "Unlit/HexShader"
                 float   d                               = max(dot(p, hexVector), p.x);// hexgagon distance function
                 float   w                               = _HighlightBorderBlur * fwidth(d);
 
-                float   cutout                          = kInnerRadius - _HighlightBorderSize;
+                // return fixed4(1.0, 0.0, 0.0, step(d, kOuterRadius));
+
+                float   cutout                          = kOuterRadius - _HighlightBorderSize;
                 float   angle01                         = ((atan2(ncp.x, ncp.y) * kInvPI) + 1.0) * 0.5;
 
                 // return fixed4(angle01, angle01, angle01, 1.0);
@@ -257,6 +261,9 @@ Shader "Unlit/HexShader"
 
                 float2  halfTexelSize                   = _MainTex_TexelSize * 0.5;
                 float4  hexTileColor                    = tex2D(_MainTex, getHexTileUV(hexTileCoord) + float2(halfTexelSize.x * i.tileUV.x, halfTexelSize.y * i.tileUV.y));
+
+                // return fixed4(hexTileColor.a ? hexTileColor.rgb : fixed3(1.0, 1.0, 1.0), isSelected ? _HexFieldCursorHighlightStrenth : 0.1);
+
 
                 // segment                                 = step(kHexSegmentLength * 5, angle01) * step(angle01, kHexSegmentLength * (5 + 1));
                 // return fixed4(angle01, angle01, angle01, segment);
@@ -284,7 +291,7 @@ Shader "Unlit/HexShader"
                     }   
                 }
 
-                float   hexagon                         = (smoothstep(kInnerRadius + w, kInnerRadius - w, d) - smoothstep(cutout + w, cutout - w, d)) * segment;
+                float   hexagon                         = (smoothstep(kOuterRadius + w, kOuterRadius - w, d) - smoothstep(cutout + w, cutout - w, d)) * segment;
 
                 return fixed4(hexTileColor.a ? hexTileColor.rgb : fixed3(1.0, 1.0, 1.0), max(isSelected ? _HexFieldCursorHighlightStrenth : 0.1, hexagon));
             }
